@@ -7,7 +7,7 @@
   },
   "providers": {
     "openai": {
-      "apiKey": "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",
+      "apiKey": "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",
       "apiBase": "https://openrouter.ai/api/v1"
     }
   },
