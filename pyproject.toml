@@ -3,9 +3,8 @@ members = [
   "backend",
   "qwen-code-api",
   "mcp/mcp-lms",
-
+  "nanobot",
   # Uncomment these later in the lab after you add the matching repos/packages.
-
   # "mcp/mcp-obs",
   # "nanobot-websocket-channel/nanobot-channel-protocol",
   # "nanobot-websocket-channel/mcp-webchat",
@@ -15,6 +14,7 @@ members = [
 
 [tool.uv.sources]
 mcp-lms = { path = "mcp/mcp-lms", editable = true }
+nanobot-ai = { url = "https://github.com/HKUDS/nanobot/archive/e7d371ec1e6531b28898ec2c869ef338e8dd46ec.zip" }
 
 # Uncomment these later in the lab after you add the matching repos/packages.
 
@@ -26,6 +26,7 @@ mcp-lms = { path = "mcp/mcp-lms", editable = true }
 
 [dependency-groups]
 dev = [
+  "nanobot-ai",
   "poethepoet==0.42.1",
   "pyright==1.1.408",
   "pytest==9.0.2",
