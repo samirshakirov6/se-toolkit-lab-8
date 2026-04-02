@@ -1,0 +1,29 @@
+{
+  "agents": {
+    "defaults": {
+      "provider": "openai",
+      "model": "openai/gpt-4o-mini"
+    }
+  },
+  "providers": {
+    "openai": {
+      "apiKey": "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",
+      "apiBase": "https://openrouter.ai/api/v1"
+    }
+  },
+  "tools": {
+    "mcpServers": {
+      "lms": {
+        "command": "python",
+        "args": [
+          "-m",
+          "mcp_lms"
+        ],
+        "env": {
+          "NANOBOT_LMS_BACKEND_URL": "http://localhost:42001",
+          "NANOBOT_LMS_API_KEY": "lms-secret-key-123"
+        }
+      }
+    }
+  }
+}
