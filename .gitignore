@@ -21,3 +21,12 @@ tmp
 /nanobot/config.json
 /nanobot/config.resolved.json
 /nanobot/workspace/sessions/
+nanobot/config.json
+.env.docker.secret
+~/.nanobot/config.json
+nanobot/config.json
+.env.docker.secret
+~/.nanobot/config.json
+nanobot/config.json
+.env.docker.secret
+*.secret
