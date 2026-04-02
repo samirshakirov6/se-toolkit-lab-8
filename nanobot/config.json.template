@@ -7,7 +7,7 @@
   },
   "providers": {
     "openai": {
-      "apiKey": "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",
+      "apiKey": "YOUR_API_KEY_HERE",
       "apiBase": "https://openrouter.ai/api/v1"
     }
   },
@@ -15,12 +15,9 @@
     "mcpServers": {
       "lms": {
         "command": "python",
-        "args": [
-          "-m",
-          "mcp_lms"
-        ],
+        "args": ["-m", "mcp_lms"],
         "env": {
-          "NANOBOT_LMS_BACKEND_URL": "http://localhost:42001",
+          "NANOBOT_LMS_BACKEND_URL": "http://backend:8000",
           "NANOBOT_LMS_API_KEY": "lms-secret-key-123"
         }
       }
