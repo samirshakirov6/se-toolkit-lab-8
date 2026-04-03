@@ -6,42 +6,59 @@ always: true
 
 # Observability Skill
 
-You have access to observability tools that let you query VictoriaLogs (structured logs) and VictoriaTraces (distributed traces) for the LMS backend.
+You have access to observability tools that let you query VictoriaLogs and VictoriaTraces for the LMS backend.
 
 ## Available Tools
 
-- `mcp_obs_logs_error_count` — Count errors for a service over a time window. Use this FIRST when asked about errors to quickly check if there are any.
-- `mcp_obs_logs_search` — Search logs using LogsQL. Use to find specific log entries, extract trace IDs, or investigate error details.
-- `mcp_obs_traces_list` — List recent traces for a service. Returns trace IDs and operation summaries.
-- `mcp_obs_traces_get` — Fetch a specific trace by ID. Use after finding a trace_id in logs to inspect the full request path.
+- mcp_obs_logs_error_count - Count errors for a service over a time window
+- mcp_obs_logs_search - Search logs using LogsQL to find specific entries and trace IDs
+- mcp_obs_traces_list - List recent traces for a service
+- mcp_obs_traces_get - Fetch a specific trace by ID
 
-## Strategy
+## Triggers
 
-### When user asks about errors (e.g., "any errors in the last hour?"):
+These messages MUST trigger full automatic investigation with NO clarifying questions:
+- What went wrong?
+- What happened?
+- Check system health
+- Investigate the failure
+- Why is it broken?
 
-1. Call `mcp_obs_logs_error_count` with the LMS backend service name and appropriate time window
-2. If errors exist, call `mcp_obs_logs_search` to find the specific error entries and extract trace IDs
-3. If you find a trace_id, call `mcp_obs_traces_get` to inspect the failing request path
-4. Summarize findings concisely — don't dump raw JSON
+## Investigation Flow for trigger messages
 
-### When user asks about a specific issue:
+Execute ALL steps in order WITHOUT stopping:
 
-1. Use `mcp_obs_logs_search` with a targeted LogsQL query
-2. Extract relevant trace IDs from log entries
-3. Use `mcp_obs_traces_get` to trace the request flow
-4. Report what you found in plain language
+1. Call mcp_obs_logs_error_count with service=Learning Management Service and minutes=10
+2. If errors exist, call mcp_obs_logs_search with query `_time:10m severity:ERROR event:db_query` and limit=5
+3. Extract the FIRST trace_id from results
+4. Call mcp_obs_traces_get with that trace_id
+5. Output the template below
 
-## Query Patterns
+## Response Template for trigger messages
 
-Common LogsQL queries:
-- `_time:10m service.name:"Learning Management Service" severity:ERROR` — recent LMS errors
-- `_time:1h service.name:"Learning Management Service" event:db_query` — database queries
-- `trace_id:"<id>"` — all logs for a specific trace
+Investigation results for the Learning Management Service:
+
+Log evidence: N errors in last 10m. Error type: X. Affected operation: Y.
+
+Trace evidence: Trace Z shows failure in span W at operation V.
+
+Root cause: Service A failed during operation B. HTTP response reported code C but logs/traces show real error is D.
+
+Conclusion: One sentence summary.
+
+## Rules
+
+- NEVER ask follow-up questions for trigger messages
+- ALWAYS call all three tools before answering
+- Highlight discrepancies between HTTP response and log/trace evidence
+- Never dump raw JSON
+
+## For other error queries
+
+Call error_count, then logs_search if errors exist, then traces_get for a trace_id. Summarize concisely.
 
 ## Response Style
 
-- Keep responses concise and focused on what the user asked
-- Summarize findings in plain language
-- Only include technical details (trace IDs, query strings) when they help the user understand
-- Never dump raw JSON — extract and explain the relevant parts
-- If no errors found, say so clearly
+- Plain language summaries
+- No raw JSON dumps
+- Say clearly if no errors found
