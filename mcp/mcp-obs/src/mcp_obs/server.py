@@ -20,7 +20,7 @@ def _text(data: ToolPayload) -> list[TextContent]:
     if isinstance(data, BaseModel):
         payload = data.model_dump()
     else:
-        payload = [item.model_dump() for item in data]
+        payload = data
     return [TextContent(type="text", text=json.dumps(payload, ensure_ascii=False))]
 
 

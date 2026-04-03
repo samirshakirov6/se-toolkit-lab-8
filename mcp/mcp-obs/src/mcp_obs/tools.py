@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Callable
+from typing import Any, Callable, Union
 
 from mcp.types import Tool
 from pydantic import BaseModel
+
+ToolPayload = Union[list[dict[str, Any]], dict[str, Any], BaseModel]
 
 
 @dataclass
