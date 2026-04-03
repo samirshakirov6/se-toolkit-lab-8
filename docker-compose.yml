@@ -107,7 +107,6 @@ services:
       - lms-network
     volumes:
       # Mount only the parts nanobot needs to edit or read from the repo.
-      - ./nanobot:/app/nanobot
       - ./mcp:/app/mcp
       - ./nanobot-websocket-channel:/app/nanobot-websocket-channel
       - ./wiki:/app/wiki:ro
