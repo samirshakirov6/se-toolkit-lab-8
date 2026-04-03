@@ -67,6 +67,17 @@ def main():
     victorialogs_url = os.environ.get("NANOBOT_VICTORIALOGS_URL")
     victoriatraces_url = os.environ.get("NANOBOT_VICTORIATRACES_URL")
 
+    # Ensure obs MCP server section exists
+    if "obs" not in config.get("tools", {}).get("mcpServers", {}):
+        config.setdefault("tools", {}).setdefault("mcpServers", {})["obs"] = {
+            "command": "python",
+            "args": ["-m", "mcp_obs.server"],
+            "env": {
+                "NANOBOT_VICTORIALOGS_URL": "",
+                "NANOBOT_VICTORIATRACES_URL": "",
+            },
+        }
+
     if victorialogs_url:
         config["tools"]["mcpServers"]["obs"]["env"]["NANOBOT_VICTORIALOGS_URL"] = victorialogs_url
     if victoriatraces_url:
